@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PSYNAV 🌸 - Self-assessment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #7AC8F5, #EFD9F7);
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+      overflow-y: auto;
+      height: 90vh;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #555;
+      font-weight: bold;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .input-group input[type="radio"] {
+      display: none;
+    }
+
+    .input-group label {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px 18px;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input[type="radio"]:checked+label {
+      background-color: #7AC8F5;
+      color: #fff;
+      border: 1px solid #5ea9d7;
+      box-shadow: 0 0 10px rgba(66, 134, 244, 0.5);
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #4caf50, #66bb6a);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: background 0.2s ease-in-out;
+    }
+
+    input[type="submit"]:hover {
+      background: linear-gradient(90deg, #388e3c, #43a047);
+    }
+
+    #results {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      display: none;
+    }
+
+    #results h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .answer-text {
+      margin-bottom: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .button {
+      width: 48%;
+      padding: 12px;
+      background: linear-gradient(90deg, #FF758C, #FF7EB3);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease-in-out;
+    }
+
+    .button:hover {
+      background: linear-gradient(90deg, #ff5570, #ff6b81);
+    }
+
+    /* 响应式优化 */
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+        height: auto;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>PSYNAV 🌸 - Self-assessment</h1>
+
+    <!-- 自我评估问卷 -->
+    <form id="surveyForm">
+      <div id="questionList">
+        <!-- 动态生成问题 -->
+      </div>
+      <input type="submit" value="Submit">
+    </form>
+
+    <!-- 结果展示 -->
+    <div id="results">
+      <h3>Your answers:</h3>
+      <div class="answer-text" id="answerList">
+        <!-- 动态展示用户答案 -->
+      </div>
+      <h3>Total Score: <span id="totalScore">0</span></h3>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div id="buttonContainer" class="button-container">
+      <button id="goToChat" class="button">
+        <i class="fas fa-comments"></i> Go to Chat
+      </button>
+      <button id="homepage" class="button">
+        <i class="fas fa-home"></i> Homepage
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // 问题数据
+    const questions = [
+      "I find myself fretting over very minor things.",
+      "I seem to be oversensitive.",
+      "I get impatient if I am hindered.",
+      "I tend to overreact to things.",
+      "I find myself easily upset.",
+      "I find myself easily irritated.",
+      "I feel chronically hypervigilant.",
+      "I find myself easily offended.",
+      "I find myself consuming a lot of energy.",
+      "I find it difficult to calm myself down.",
+      "I find it difficult to calm down after being stimulated.",
+      "I am nervous.",
+      "I find it difficult to relax.",
+      "I feel apprehensive.",
+      "I find it difficult to tolerate being hindered at work/study."
+    ];
+
+    // 动态生成问题
+    const questionList = document.getElementById('questionList');
+    questions.forEach((question, index) => {
+      const questionNumber = index + 1;
+      const questionHtml = `
+        <h3 id="Q${questionNumber}">${questionNumber}. ${question}</h3>
+        <div class="input-group">
+          <input type="radio" id="q${questionNumber}a" name="q${questionNumber}" value="a">
+          <label for="q${questionNumber}a">A. Not applicable</label>
+        </div>
+        <div class="input-group">
+          <input type="radio" id="q${questionNumber}b" name="q${questionNumber}" value="b">
+          <label for="q${questionNumber}b">B. Occasionally applicable</label>
+        </div>
+        <div class="input-group">
+          <input type="radio" id="q${questionNumber}c" name="q${questionNumber}" value="c">
+          <label for="q${questionNumber}c">C. Often applicable</label>
+        </div>
+        <div class="input-group">
+          <input type="radio" id="q${questionNumber}d" name="q${questionNumber}" value="d">
+          <label for="q${questionNumber}d">D. Most applicable</label>
+        </div>
+      `;
+      questionList.innerHTML += questionHtml;
+    });
+
+    // 提交事件监听
+    document.getElementById('surveyForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      let answers = [];
+      let sum = 0;
+      let answerText = [];
+
+      // 获取每个问题的答案
+      for (let i = 1; i <= 15; i++) {
+        const answerElement = document.querySelector(`input[name="q${i}"]:checked`);
+        if (answerElement) {
+          const labelElement = document.querySelector(`label[for="q${i}${answerElement.value}"]`);
+          const questionContent = document.querySelector(`#Q${i}`).textContent;
+          const labelContent = labelElement.textContent;
+
+          // 计分逻辑
+          switch (answerElement.value) {
+            case 'a':
+              sum += 1;
+              break;
+            case 'b':
+              sum += 2;
+              break;
+            case 'c':
+              sum += 3;
+              break;
+            case 'd':
+              sum += 4;
+              break;
+          }
+
+          // 添加结果文本
+          answerText.push(`<strong>${questionContent}</strong><br>${labelContent}`);
+        } else {
+          alert(`Please answer question ${i}`);
+          return;
+        }
+      }
+
+      // 隐藏表单并显示结果
+      document.getElementById('surveyForm').style.display = 'none';
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('buttonContainer').style.display = 'flex';
+
+      // 动态展示结果
+      document.getElementById('answerList').innerHTML = answerText.join('<br><br>');
+      document.getElementById('totalScore').textContent = sum;
+
+      // 按钮跳转逻辑
+      document.getElementById('goToChat').addEventListener('click', function () {
+        const url = "chatPage.html?sum=" + sum;
+        window.location.href = url;
+      });
+
+      document.getElementById('homepage').addEventListener('click', function () {
+        window.location.href = "homepage.html";
+      });
+    });
+  </script>
+</body>
+
+</html>

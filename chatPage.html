@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSYNAV 🌸 - AI Mental Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #7AC8F5, #EFD9F7);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .navbar .title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #388E3C;
+        }
+
+        #chatbox {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 15px;
+            height: 500px;
+            overflow-y: auto;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            word-wrap: break-word;
+            max-width: 75%;
+            width: fit-content;
+        }
+
+        .user-message {
+            background-color: #4CAF50;
+            color: white;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .chatgpt-message {
+            background-color: #E4EBF6;
+            color: #333;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        #input-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        #inputbox {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        #submit {
+            background-color: #4285F4;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        #submit:hover {
+            background-color: #357ae8;
+        }
+
+        .download-button {
+            background-color: #FF7EB3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #FF5570;
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* ✅ 适配 Markdown 内容的样式 */
+        .chatgpt-message p {
+            margin: 5px 0;
+        }
+
+        .chatgpt-message pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .chatgpt-message code {
+            background-color: #f1f1f1;
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+
+        .chatgpt-message a {
+            color: #4285F4;
+            text-decoration: none;
+        }
+
+        .chatgpt-message ul,
+        .chatgpt-message ol {
+            padding-left: 20px;
+        }
+
+        .chatgpt-message blockquote {
+            border-left: 4px solid #ccc;
+            padding-left: 10px;
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="title">PSYNAV 🌸</div>
+            <button class="button" id="homepage">HOME</button>
+        </div>
+
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Your personal AI mental assistant</h2>
+
+        <button id="download-btn" class="download-button">
+            <i class="fas fa-download"></i> Download Conversation History
+        </button>
+
+        <div id="chatbox"></div>
+
+        <div id="input-container">
+            <input id="inputbox" type="text" placeholder="Please enter your question...">
+            <button id="submit">
+                <i class="fas fa-paper-plane"></i> Submit
+            </button>
+        </div>
+
+        <div id="loading">
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        const chatboxEl = document.getElementById('chatbox');
+        const inputEl = document.getElementById('inputbox');
+        const submitEl = document.getElementById('submit');
+        const loadingEl = document.getElementById('loading');
+        let conversationHistory = '';
+
+        submitEl.addEventListener('click', async () => {
+            const input = inputEl.value.trim();
+            if (input === '') return;
+
+            addMessage(input, 'user');
+            conversationHistory += `User: ${input}\n`;
+            inputEl.value = '';
+
+            loadingEl.style.display = 'block';
+
+            const response = await getResponseFromQwen(input);
+
+            loadingEl.style.display = 'none';
+            addMessage(response, 'chatgpt');
+            conversationHistory += `Assistant: ${response}\n`;
+        });
+
+        // ✅ 添加消息到聊天框，支持 Markdown
+        function addMessage(text, sender) {
+            const messageEl = document.createElement('div');
+            messageEl.classList.add('message', sender === 'user' ? 'user-message' : 'chatgpt-message');
+
+            if (sender === 'chatgpt') {
+                messageEl.innerHTML = marked.parse(text); // 解析 Markdown
+            } else {
+                messageEl.textContent = text;
+            }
+
+            chatboxEl.appendChild(messageEl);
+            chatboxEl.scrollTop = chatboxEl.scrollHeight;
+        }
+
+        // ✅ 通义千问 API 请求
+        async function getResponseFromQwen(input) {
+            const endpoint = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+            const apiKey = 'sk-05bc56e6ace444d9b203a6e55ecebc17';
+
+            const condition = getUserCondition();
+
+            const payload = {
+                model: "qwen-plus",
+                messages: [
+                    {
+                        role: "system",
+                        content: `You are a careful and helpful psychological assistant.
+                        Your response should not contain the role name such as 'assistant'.
+                        All your responses should act as this psychological assistant.
+                        You should never act as the user. You will be given the user's mental condition,
+                        your diagnosis and guidance must be related to the user's mental condition.
+                        Here is the user's condition: ${condition}.
+                        You will be given your conversation history with the user.
+                        Your response must be based on the conversation history.
+                        Your response should not contain the role name such as 'assistant'.
+                        Your first response should analyze the user's condition and provide advice.`
+                    },
+                    {
+                        role: "user",
+                        content: conversationHistory + "\n" + input
+                    }
+                ],
+                max_tokens: 512,
+                temperature: 1.0,
+                presence_penalty: 0.5,
+                n: 1
+            };
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            return result.choices[0].message.content;
+        }
+
+        // ✅ 动态获取用户心理状态
+        function getUserCondition() {
+            const sum = parseInt(new URLSearchParams(window.location.search).get('sum'), 10);
+            if (sum <= 15) {
+                return 'The user has no stress.';
+            } else if (sum >= 16 && sum <= 30) {
+                return 'The user has mild stress and needs emotional debugging.';
+            } else if (sum >= 31 && sum <= 45) {
+                return 'The user has moderate stress.';
+            } else if (sum >= 46 && sum <= 60) {
+                return 'The user is under heavy pressure and should seek professional counseling.';
+            } else {
+                return 'Unknown condition.';
+            }
+        }
+
+        // ✅ 下载聊天记录
+        document.getElementById('download-btn').addEventListener('click', () => {
+            const blob = new Blob([conversationHistory], { type: 'text/plain' });
+            const now = new Date();
+            const timestamp = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}_${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `conversation_history_${timestamp}.txt`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+
+        // ✅ 监听回车提交
+        inputEl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitEl.click();
+            }
+        });
+
+        // ✅ 返回首页
+        document.getElementById('homepage').addEventListener('click', function () {
+            window.location.href = "homepage.html";
+        });
+    </script>
+</body>
+
+</html>

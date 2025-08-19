@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSYNAV</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #a4c7ffc0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            background-color: #5593f8c8;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        nav button {
+            border: 1px solid black;
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            transition: background-color 0.5s ease;
+            margin-right: 25px;
+        }
+
+        nav button:hover {
+            background-color: #ddd;
+        }
+
+        #navTitle {
+            margin-left: 25px;
+            margin-top: 5px;
+            font-size: 25px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            font-size: 12px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .main {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .main .left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .main .left h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            margin-left: 100px;
+        }
+
+        .main .right {
+            width: 1056px;
+            height: 672px;
+            background-size: auto;
+            background-position: center;
+        }
+
+        footer {
+            background-color: #5593f8c8;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        #homepageTitle {
+
+            font-family: Verdana;
+            font-size: 100px;
+        }
+
+        #startDiagnose {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px 4px 56px;
+            cursor: pointer;
+            border-radius: 50px;
+            align-self: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div id="navTitle">Psychological Navigation</div>
+        <div>
+            <button id="diagnose">Diagnose</button>
+            <button id="resources">Resources</button>
+            <div class="dropdown">
+                <button id="support">Support</button>
+                <div class="dropdown-content">
+                    <a href="https://www.mhanational.org/">US Mental Health Support</a>
+                    <a href="https://www.mentalhealth.org.uk/">UK Mental Health Support</a>
+                    <a href="http://psych.cas.cn/">CN Mental Health Support</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main">
+        <div class="left">
+            <h1 id="homepageTitle">PSYNAV</h1>
+            <button id="startDiagnose">START TO DIAGNOSE</button>
+        </div>
+        <div class="right"></div>
+        <img src="homepageLogo.png" alt="Homepage Logo" style="width:100%; height:auto;">
+    </div>
+
+    <footer>
+        Mental Health Disclaimer: The content on this website is not a substitute for professional psychological
+        counseling.<br><br>
+        &copy; 2023 PSYNAV. All rights reserved.
+    </footer>
+</body>
+
+<script>
+    document.getElementById('startDiagnose').addEventListener('click', function () {
+        window.location.href = 'loginPage.html';
+    });
+    document.getElementById('resources').addEventListener('click', function () {
+        window.location.href = 'resourcesPage.html';
+    });
+    document.getElementById('diagnose').addEventListener('click', function () {
+        window.location.href = 'loginPage.html';
+    });
+</script>
+
+</html>

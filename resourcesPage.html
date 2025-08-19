@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSYNAV</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #a4c7ffc0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            background-color: #5593f8c8;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        nav button {
+            border: 1px solid black;
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            transition: background-color 0.5s ease;
+            margin-right: 25px;
+        }
+
+        nav button:hover {
+            background-color: #ddd;
+        }
+
+        #navTitle {
+            margin-left: 25px;
+            margin-top: 5px;
+            font-size: 25px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            font-size: 12px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+
+        .main {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 20px;
+            margin: 10px;
+        }
+
+        .main .left {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 25px;
+            margin-left: 100px;
+            margin-right: 25px;
+        }
+
+        .main .right {
+            width: 1056px;
+            height: 672px;
+            background-size: auto;
+        }
+
+        .article {
+            width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .article h2 {
+            margin-top: 0;
+        }
+
+        .links {
+            display: flex;
+            justify-content: baseline;
+        }
+
+        .links a {
+            margin: 0 10px;
+            padding: 5px 10px;
+            background-color: #5593f8c8;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #5593f8c8;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        #homepageTitle {
+            font-family: Verdana;
+            font-size: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div id="navTitle">Psychological Navigation</div>
+        <div>
+            <button id="homepage">Home</button>
+            <div class="dropdown">
+                <button id="support">Support</button>
+                <div class="dropdown-content">
+                    <a href="https://www.mhanational.org/">US Mental Health Support</a>
+                    <a href="https://www.mentalhealth.org.uk/">UK Mental Health Support</a>
+                    <a href="http://psych.cas.cn/">CN Mental Health Support</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main">
+        <div class="left">
+            <div class="video">
+                <h3>Video Resources</h3>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/eGVWRvNe1-A"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="right">
+            <div class="article">
+                <h2>Why good mental health ?</h2>
+                <p>Good mental health is an essential cornerstone of overall well-being and a crucial determinant of
+                    one's quality of life. It encompasses emotional, psychological, and social aspects that contribute
+                    to our ability to cope with challenges, build positive relationships, and achieve personal
+                    fulfillment. Just as physical health is integral to the body's optimal functioning, mental health
+                    plays an equally vital role in our daily lives. A state of good mental health fosters resilience,
+                    enabling us to navigate stress, anxiety, and adversity more effectively. It enhances cognitive
+                    abilities, decision-making skills, and creativity, ultimately influencing our productivity and
+                    success in various spheres. Moreover, maintaining sound mental health is key to fostering healthy
+                    relationships and building strong communities, as it enables individuals to communicate, empathize,
+                    and connect on a deeper level. In an era characterized by fast-paced lifestyles, increasing demands,
+                    and digital connectedness, the importance of prioritizing and nurturing good mental health cannot be
+                    overstated. It is a foundation upon which we can lead fulfilling lives and contribute positively to
+                    the world around us.</p>
+            </div>
+            <div class="links">
+                <a href="https://www.cdc.gov/mentalhealth/learn/index.htm">About mental health</a>
+                <a href="https://theconversation.com/exam-stress-what-is-it-and-how-can-i-manage-it-97211">Exam stress:
+                    What is it and how can I manage it?</a>
+                <a href="https://online.arizona.edu/news/10-mental-health-tips-online-students">10 Mental Health
+                    Tips</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Mental Health Disclaimer: The content on this website is not a substitute for professional psychological
+        counseling.<br><br>
+        &copy; 2023 PSYNAV. All rights reserved.
+    </footer>
+</body>
+
+<script>
+    document.getElementById('homepage').addEventListener('click', function () {
+        window.location.href = "homepage.html"; // 替换为你要跳转的页面的URL
+    });
+</script>
+
+</html>
